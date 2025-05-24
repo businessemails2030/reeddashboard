@@ -1,23 +1,22 @@
 # db.py
+import streamlit as st
 import mysql.connector
 from mysql.connector import Error
 import pandas as pd
 
 def get_connection():
-    # Connect to Railway MySQL
-    conn = mysql.connector.connect(
-        host=st.secrets["mysql"]["host"],
-        port=st.secrets["mysql"]["port"],
-        user=st.secrets["mysql"]["user"],
-        password=st.secrets["mysql"]["password"],
-        database=st.secrets["mysql"]["database"]
-    )
-
-    cursor = conn.cursor()
-    cursor.execute("SELECT NOW();")
-    result = cursor.fetchone()
-
-    st.success(f"Connected to MySQL! Current time: {result[0]}")
+    try:
+        conn = mysql.connector.connect(
+            host=st.secrets["mysql"]["host"],
+            port=st.secrets["mysql"]["port"],
+            user=st.secrets["mysql"]["user"],
+            password=st.secrets["mysql"]["password"],
+            database=st.secrets["mysql"]["database"]
+        )
+        return conn
+    except Error as e:
+        st.error(f"❌ Error connecting to MySQL: {e}")
+        return None
     
     # try:
     #     connection = mysql.connector.connect(
