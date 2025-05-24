@@ -3,16 +3,6 @@ from db import get_connection
 from auth import check_password, hash_password
 from datetime import datetime
 
-def log_event(event_type, username, details=""):
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute(
-        "INSERT INTO logs (event_type, username, details) VALUES (%s, %s, %s)",
-        (event_type, username, details)
-    )
-    conn.commit()
-    cursor.close()
-    conn.close()
 
 def login():
     st.title("Login")
@@ -31,7 +21,6 @@ def login():
             st.session_state['logged_in'] = True
             st.session_state['username'] = user['username']
             st.session_state['role'] = user['role']
-            log_event("login", user['username'], "User logged in")
             st.success(f"Welcome, {user['username']} ({user['role']})")
             st.rerun()
         else:
@@ -95,7 +84,6 @@ def create_user():
                 )
                 conn.commit()
                 st.success("User created successfully.")
-                log_event("user_creation", st.session_state['username'], f"Created user {new_username}")
             cursor.close()
             conn.close()
 
@@ -122,14 +110,12 @@ def manage_users():
                 )
                 conn.commit()
                 st.success("User updated.")
-                log_event("user_update", st.session_state['username'], f"Updated user {user['username']}")
 
         with col4:
             if st.button("Delete", key=f"delete_{user['id']}"):
                 cursor.execute("DELETE FROM users WHERE id = %s", (user['id'],))
                 conn.commit()
                 st.warning("User deleted.")
-                log_event("user_deletion", st.session_state['username'], f"Deleted user {user['username']}")
 
         # Change password row
         with st.expander(f"Change Password for {user['username']}"):
@@ -139,21 +125,6 @@ def manage_users():
                 cursor.execute("UPDATE users SET password_hash = %s WHERE id = %s", (hashed, user['id']))
                 conn.commit()
                 st.success("Password changed.")
-                log_event("password_reset", st.session_state['username'], f"Changed password for {user['username']}")
 
     cursor.close()
     conn.close()
-
-def view_logs():
-    st.subheader("Audit Logs")
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM logs ORDER BY timestamp DESC LIMIT 100")
-    logs = cursor.fetchall()
-    cursor.close()
-    conn.close()
-
-    if logs:
-        st.dataframe(logs, use_container_width=True)
-    else:
-        st.info("No logs found.")

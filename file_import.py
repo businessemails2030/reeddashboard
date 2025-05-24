@@ -21,7 +21,6 @@ def import_csv_with_mapping():
                 'provider': None,
                 'student': None,
                 'price': None,
-                'wasPrice': None,
                 'link': None,
                 'date': None,
             }
@@ -64,11 +63,11 @@ def import_csv_with_mapping():
                     if cursor.fetchone()[0] == 0:
                         cursor.execute("""
                             INSERT INTO reed_inventory 
-                            (CourseId, title, subTitle, provider, student, price, wasPrice, link, date)
-                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                            (CourseId, title, subTitle, provider, student, price, link, date)
+                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                         """, (
                             row['CourseId'], row['title'], row['subTitle'], row['provider'],
-                            int(row['student']), float(row['price']), float(row['wasPrice']),
+                            int(row['student']), float(row['price']),
                             row['link'], row['date']
                         ))
                         inserted += 1

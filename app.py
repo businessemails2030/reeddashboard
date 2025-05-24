@@ -4,20 +4,18 @@ from auth import check_password, hash_password
 from file_import import import_csv_with_mapping
 from reed_analysis import show_analysis,show_analysis_date_range
 from datetime import datetime
-from user_manage import log_event, login, create_user, manage_users, view_logs
+from user_manage import login, create_user, manage_users
 
 
 
 def admin_panel():
 
-    admin_option = st.sidebar.radio("Admin", ["Create User", "Manage Users", "Logs", "Import CSV"], key="admin_page")
+    admin_option = st.sidebar.radio("Admin", ["Create User", "Manage Users", "Import CSV"], key="admin_page")
 
     if admin_option == "Create User":
         create_user()
     elif admin_option == "Manage Users":
         manage_users()
-    elif admin_option == "Logs":
-        view_logs()
     elif admin_option == "Import CSV":
         import_csv_with_mapping()
 

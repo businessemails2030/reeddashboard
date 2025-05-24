@@ -96,9 +96,12 @@ def show_analysis_date_range():
     merged['provider'] = merged['provider_d1'].combine_first(merged['provider_d2'])
     merged.drop(columns=['title_d1', 'title_d2', 'provider_d1', 'provider_d2'], inplace=True)
 
-    merged['difference'] = merged['student_date2'] - merged['student_date1']
+    # Convert student counts to numeric
+    merged['student_date1'] = pd.to_numeric(merged['student_date1'], errors='coerce')
+    merged['student_date2'] = pd.to_numeric(merged['student_date2'], errors='coerce')
 
-    # Calculate % change safely
+    # Calculate difference and percent change
+    merged['difference'] = merged['student_date2'] - merged['student_date1']
     merged['percent_change'] = merged.apply(
         lambda row: ((row['difference'] / row['student_date1']) * 100)
         if pd.notnull(row['student_date1']) and row['student_date1'] != 0 else None,
@@ -108,6 +111,7 @@ def show_analysis_date_range():
     # Round and fill NaN
     merged['percent_change'] = merged['percent_change'].round(2)
     merged['percent_change'] = merged['percent_change'].fillna("N/A")
+
 
     # Rearranging columns
     merged = merged[['CourseId', 'title', 'provider', 'student_date1', 'student_date2', 'difference', 'percent_change']]
