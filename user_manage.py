@@ -37,6 +37,37 @@ def login():
         else:
             st.error("Invalid username or password")
 
+# def login():
+#     st.title("Login")
+#     username = st.text_input("Username")
+#     password = st.text_input("Password", type="password")
+
+#     col1, col2 = st.columns([1, 1])
+#     login_clicked = col1.button("Login")
+#     register_clicked = col2.button("Register")
+
+#     if login_clicked:
+#         conn = get_connection()
+#         cursor = conn.cursor(dictionary=True)
+#         cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
+#         user = cursor.fetchone()
+#         cursor.close()
+#         conn.close()
+
+#         if user and check_password(password, user['password_hash']):
+#             st.session_state['logged_in'] = True
+#             st.session_state['username'] = user['username']
+#             st.session_state['role'] = user['role']
+#             log_event("login", user['username'], "User logged in")
+#             st.success(f"Welcome, {user['username']} ({user['role']})")
+#             st.rerun()
+#         else:
+#             st.error("Invalid username or password")
+
+#     if register_clicked:
+#         st.session_state["show_register"] = False
+
+
 def create_user():
     st.subheader("Create New User")
     with st.form("create_user"):

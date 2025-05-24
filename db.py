@@ -9,7 +9,7 @@ def get_connection():
             host="localhost",
             user="root",
             password="",
-            database="streamdash"
+            database="course_dashboard"
         )
         return connection
     except Error as e:
