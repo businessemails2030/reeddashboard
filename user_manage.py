@@ -4,7 +4,7 @@ from auth import check_password, hash_password
 from datetime import datetime
 
 
-def login():
+#def login():
     # st.title("Login")
     # username = st.text_input("Username")
     # password = st.text_input("Password", type="password")
