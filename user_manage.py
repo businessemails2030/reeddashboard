@@ -47,7 +47,6 @@ def login():
             st.session_state['logged_in'] = True
             st.session_state['username'] = user['username']
             st.session_state['role'] = user['role']
-            log_event("login", user['username'], "User logged in")
             st.success(f"Welcome, {user['username']} ({user['role']})")
             st.rerun()
         else:
