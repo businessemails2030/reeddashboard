@@ -50,6 +50,6 @@ elif st.session_state['logged_in']:
         else:
             st.header("User Dashboard")
             st.info("Welcome! No admin privileges.")
-if "show_register" in st.session_state and st.session_state["show_register"]:
-    create_user()
+# if "show_register" in st.session_state and st.session_state["show_register"]:
+#     create_user()
 

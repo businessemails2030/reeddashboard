@@ -53,7 +53,7 @@ def login():
             st.error("Invalid username or password")
 
     if register_clicked:
-        st.session_state["show_register"] = True
+        st.session_state["show_register"] = False
 
 
 def create_user():
